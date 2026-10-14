@@ -15,15 +15,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check links
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: UmbrellaDocs/action-linkspector@v1
         with:
-          config-file: .github/workflows/mlc_config.json
+          config_file: .github/workflows/lint/linkspector.yml
+          fail_on_error: 'true'
+          filter_mode: nofilter
 
       - name: Lint
-        uses: avto-dev/markdown-lint@v1
+        uses: DavidAnson/markdownlint-cli2-action@v24
         with:
-          args: '**/*.md'
-          config: .github/workflows/lint/markdown.yaml
+          config: .github/workflows/lint/rules.markdownlint.yml
+          globs: |
+            **/*.md
+            !.github/ISSUE_TEMPLATE/*.md
